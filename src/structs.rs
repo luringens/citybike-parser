@@ -1,5 +1,5 @@
+use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
 
 #[derive(Deserialize, Debug)]
 pub struct JsStationFile {
@@ -20,7 +20,7 @@ pub struct JsStation {
     pub address: String,
     pub lat: f64,
     pub lon: f64,
-    pub capacity: u8,
+    pub capacity: u32,
 }
 
 #[derive(Deserialize, Debug)]
@@ -38,19 +38,19 @@ pub struct JsStatuses {
 #[derive(Deserialize, Debug)]
 pub struct JsStatus {
     pub station_id: String,
-    pub is_installed: u8,
-    pub is_renting: u8,
-    pub is_returning: u8,
+    pub is_installed: u32,
+    pub is_renting: u32,
+    pub is_returning: u32,
     pub last_reported: i64,
-    pub num_bikes_available: u8,
-    pub num_docks_available: u8,
+    pub num_bikes_available: u32,
+    pub num_docks_available: u32,
 }
 
-#[derive(Serialize, Debug)]
+#[derive(Debug)]
 pub struct Entry {
-    pub timestamp: String,
+    pub timestamp: NaiveDateTime,
     pub station_id: u32,
-    pub num_bikes_available: u8,
+    pub num_bikes_available: u32,
 }
 
 #[derive(Serialize, Debug)]
@@ -59,6 +59,12 @@ pub struct Station {
     pub station_id: u32,
     pub lat: f64,
     pub lon: f64,
-    pub capacity: u8,
-    pub bikes_available: HashMap<String, u8>,
+    pub capacity: u32,
+    pub bikes_available: Vec<StationStatusentry>,
+}
+
+#[derive(Serialize, Debug)]
+pub struct StationStatusentry {
+    pub time: u32,
+    pub bikes: f32,
 }
